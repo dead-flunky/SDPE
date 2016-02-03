@@ -1,0 +1,249 @@
+\documentclass[accentcolor=tud1b,colorbacktitle]{tudbeamer}
+\usepackage{graphicx,amsmath,bm,color,psfrag}
+
+\definecolor{TUDgreen}{rgb}{0.4980,0.6706,0.0863} % (127,171,22)
+\definecolor{TUDblue}{rgb}{0,0.3529,0.6627}       % (0,90,169)
+\definecolor{TUDred}{rgb}{0.9020,0,0.1020}        % (230,0,26)
+
+\begin{document}
+
+\title[]{\Large High-Resolution Direction Finding \\ 
+of Coherent Sources \vspace{1.6mm} \\
+in the Presence of Model Errors \vspace{1.6mm} \\
+Using Alternating Projections}
+\subtitle{}
+
+\date{September 3, 2009}
+\author[P. Heidenreich]{}
+\logo{\textcolor{TUDblue}{\large SPG}}
+\institute[SSP]{}
+
+\begin{titleframe}
+\begin{center}\vspace{2mm}
+\textit{\Large Philipp Heidenreich and Abdelhak M. Zoubir}\vspace{4mm}\\
+\includegraphics[width=0.3\textwidth]{figures/spg_logo_tud1b.eps}\vspace{2mm}\\
+  Signal Processing Group\\
+  Technische Universit\"at Darmstadt\\
+  \{pheiden,zoubir\}@spg.tu-darmstadt.de
+\end{center}
+\end{titleframe}
+
+
+\begin{frame}\frametitle{Motivation}
+
+Direction finding with coherent sources for an automotive radar-array\vspace{-2mm}
+
+\begin{center}
+\psfrag{car}{\footnotesize car (ACC)}
+\psfrag{v1}{\footnotesize $v_1$}
+\psfrag{v2}{\footnotesize $v_2$}
+\psfrag{r1}{\footnotesize $r_1$}
+\psfrag{r2}{\footnotesize $r_2$}
+\psfrag{t1}{\footnotesize $\theta_1$}
+\psfrag{t2}{\footnotesize $\theta_2$}
+\psfrag{dots}{\footnotesize $\vdots$}
+\psfrag{radar-array}{\footnotesize radar-array}
+\includegraphics[width=.62\textwidth]{figures/Xfig_auto.eps}
+\end{center}\vspace{-4mm}
+
+\begin{itemize}
+ \item multiple targets in same range bin ($r_1\approx r_2$) with identical Doppler ($v_1=v_2$)
+ \item e.g. specular multipath with guard rail, wide objects, etc.
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Motivation}
+
+In practical array processing, model errors are present $\Rightarrow$ calibration
+
+\begin{itemize}
+ \item manifold correction
+ \item pre-calibration (if decorrelation is required)
+\end{itemize}
+\medskip
+
+\begin{block}{Approach}
+We combine global and local manifold correction with maximum likelihood (ML) direction finding, and consider computational aspects.\medskip
+
+Application to experimental data
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Contents}
+
+Signal model\medskip
+
+Array calibration\medskip
+
+ML via alternating projection\medskip
+
+Proposed approach\medskip
+
+Results\medskip
+
+Conclusion
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Signal model}
+
+Nominal array output model
+$$
+\bm{x}(t)=\sum_{k=1}^{D} \bm{a}(\theta_k) s_k(t) + \bm{n}(t)=\bm{A}(\bm{\theta}) \bm{s}(t) + \bm{n}(t) 
+$$
+\begin{itemize}
+\item for a pulsed radar system $s_k(t)=b_k e^{j\omega_k t}$ with Doppler $\omega_k\propto v_k$
+\item ideal steering vector for uniform linear array (ULA) with $d=0.5\lambda$
+$$
+\bm{a}(\theta)=\left[1,e^{j\pi\sin\theta},\dots,e^{j\pi(M-1)\sin\theta}\right]^T
+$$
+\end{itemize}
+
+Spatial covariance matrix is estimated by\medskip
+
+\centerline{$\hat{\bm{R}}=\frac{1}{N}\sum_{t=1}^N \bm{x}(t)\bm{x}^H(t)$}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Signal model}
+
+For a real antenna array, the true steering vector can be expressed as 
+$$
+\tilde{\bm{a}}(\theta) = \bm{Q}(\theta) \bm{a}(\theta)
+$$
+
+\textcolor{TUDblue}{\large{Possible model errors}}
+\begin{itemize}
+\item diagonal $\bm{Q}$: gain and phase errors
+\item full $\bm{Q}$: including physical coupling model 
+\item direction dependent $\bm{Q}(\theta)$: e.g. position errors, orientation, etc.
+\end{itemize}
+\medskip
+
+Calibration is required to correct model errors
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Array calibration}
+
+Calibration measurements
+\begin{itemize}
+\item single source from known locations $\eta_c$ for $c=1,\dots,J$
+\item array response estimated by $\hat{\bm{a}}_c=\mathcal{P}\{\hat{\bm{R}}\}$
+\end{itemize}
+\medskip
+
+Problem: Find $\bm{Q}$ that best fits $\bm{Q}\bm{a}(\eta_c)$ to measured $\hat{\bm{a}}_c$, $\forall c$\medskip
+
+\begin{block}{Global calibration}
+Full global matrix is found by linear regression [Pierre \& Kaveh, 1991]
+$$
+\hat{\bm{Q}} = \arg \min_{\bm Q} \sum_{c=1}^J \left\| \hat{\bm{a}}_c - \bm{Q}\bm{a}(\eta_c)\right\|^2
+$$
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Array calibration}
+
+Direction dependent errors require local correction
+\medskip
+
+\begin{block}{Local calibration}
+Diagonal local matrix $\bm{Q}(\theta)=\mathrm{diag}\{\bm{q}(\theta)\}$ is found by weighted regression [Lanne et al., 2006]:
+$$
+\hat{\bm{q}}(\theta) = \arg \min_{\bm{q}} \sum_{c=1}^J w_c(\theta) \left\| \hat{\bm{a}}_c - \mathrm{diag}\{\bm{q}\} \bm{a}(\eta_c)\right\|^2
+$$
+\end{block}
+
+Direction dependent weights $w_c(\theta)=e^{-h(\theta-\eta_c)^2}$\medskip
+
+Selection of bandwidth $h$ 
+\begin{itemize}
+\item cross-validation, e.g. leave-one-out 
+\item sub-optimal choice $h=1/\Delta\eta^2$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{High-resolution direction finding}
+
+Coherent source scenario\vspace{-4mm}
+
+\begin{columns}
+\column{.55\textwidth}
+
+\begin{block}{\ Subspace methods + decorrelation}
+
+\begin{center}
+\psfrag{t}{\small $\hat{\bm{\theta}}$}
+\psfrag{x(t)}[][]{\small $\bm{x}(t)$}
+\psfrag{Qm1}{\small $\hat{\bm{Q}}^{-1}$}
+\psfrag{FB/SS}[][]{\small FB/SS}
+\psfrag{MUSIC}[][]{\small \ MUSIC}
+\psfrag{text1}[][]{\footnotesize pre-calibration}
+\includegraphics[height=18mm]{figures/coh_calib_df1.eps}
+\end{center}
+
+\begin{itemize}
+\item[--] pre-calibration produces colored noise
+\item[--] weak interference [Schoor \& Yang, 2009] caused by imperfect $\hat{\bm{Q}}$
+\end{itemize}
+
+\end{block}
+
+\column{.45\textwidth}
+
+\begin{block}{\centerline{Maximum likelihood}}\vspace{0.8mm}
+
+\begin{center}
+\psfrag{t}{\small $\hat{\bm{\theta}}$}
+\psfrag{x(t)}[][]{\small $\bm{x}(t)$}
+\psfrag{Qa}{\small $\hat{\bm{Q}}(\theta)\bm{a}(\theta)$}
+\psfrag{ML}[][]{\small \ ML}
+\psfrag{text2}{\footnotesize corrected manifold}
+\includegraphics[height=18mm]{figures/coh_calib_df2.eps}
+\end{center}
+
+\begin{itemize}
+\item[--] not sensitive to coherent sources
+\item[--] manifold correction allows for local calibration
+\end{itemize}
+
+\end{block}
+
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Maximum likelihood}
+
+Stochastic model: $\bm{\theta}$, ${\bf s}(t)$ and $\sigma^2$ are assumed deterministic, but unknown
+$$
+{\bf x}(t) \stackrel{\mathsf{i.i.d.}}{\sim} \mathcal{N}_C\left({\bf A}(\bm{\theta}){\bf s}(t),\sigma^2{\bf I}\right)
+$$
+
+Minimization of negative log-likelihood results in multidimensional non-linear search for $\bm{\theta}$; after concentration w.r.t. ${\bf s}(t)$ and $\sigma^2$
+$$
+\hat{\bm{\theta}} = \arg\min_{\bm{\theta}} \mathsf{Tr}\left\{ \bm{P}^{\perp}_{\bm{A}(\bm{\theta})} \hat{\bm{R}} \right\} $$
+$$ \bm{P}^\perp_{\bm{A}(\bm{\theta})}=\bm{I}-\bm{A}(\bm{\theta})\left\{\bm{A}^H(\bm{\theta})\bm{A}(\bm{\theta})\right\}^{-1}\bm{A}^H(\bm{\theta})
+$$
+\begin{itemize}
+\item Difficult to implement for real-time application
+\end{itemize}
+
+\end{frame}
+
+
+\end{document}

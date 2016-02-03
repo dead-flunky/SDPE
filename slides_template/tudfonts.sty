@@ -1,0 +1,79 @@
+% tudreport is the report-class as described in the TUD-Design-Manual
+% It is based on (makes heavy use of) the KOMA-Class scrreprt
+\def\fileversion{1.1}
+\def\filedate{2008/01/22}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tudfonts}
+ [\filedate\space\fileversion\space 
+   Joe Werner's TUD-Design-Manual package]
+
+% Include "niceties"
+\RequirePackage[TS1,OT1]{fontenc}
+\RequirePackage{tudcolours}
+
+% make Euro symbol available
+\let\TUD@texteuro\texteuro
+\renewcommand{\texteuro}{{\fontencoding{TS1}\selectfont\TUD@texteuro}}
+
+% Waehle die TUD-Standardschriftarten
+  \RequirePackage{type1cm}
+  \RequirePackage[charter]{mathdesign}
+
+  \renewcommand*{\rmdefault}{5ch}
+  \renewcommand*{\sfdefault}{5fp}
+  \renewcommand*{\ttdefault}{txtt}
+  \newcommand{\acdefault}{5sf}
+  \renewcommand*{\bfdefault}{b}
+
+  \let\@TUD@normalsize\normalsize
+  \renewcommand{\normalsize}{\@TUD@normalsize
+       \abovedisplayskip 1\baselineskip plus 0.25\baselineskip minus 0.75\baselineskip
+       \abovedisplayshortskip 0.25\baselineskip plus 1\baselineskip
+       \belowdisplayshortskip 0.75\baselineskip plus 0.5\baselineskip minus 0.5\baselineskip
+       \belowdisplayskip 1\baselineskip plus 0.25\baselineskip minus 0.75\baselineskip}
+
+  \@ifundefined{TUD@pagingfont@size}{\newcommand{\TUD@pagingfont@size}{10}}{} % nur zur Sicherheit. sollte in tudrules definiert werden
+  \AtEndOfClass{\newcommand{\pagingfont}{\fontfamily{\sfdefault}\fontseries{mb}\fontshape{n}\fontsize{\TUD@pagingfont@size}{\TUD@pagingfont@size}\selectfont}}
+  \AtEndOfClass{\newcommand{\footerfont}{\fontfamily{\sfdefault}\fontseries{m}\fontshape{n}\fontsize{\TUD@pagingfont@size}{\TUD@pagingfont@size}\selectfont}}
+  \newcommand{\accentfont}{\fontfamily{\acdefault}\fontseries{m}\fontshape{n}\selectfont}
+  \DeclareTextFontCommand{\textaccent}{\accentfont}
+  \newenvironment{accenttext}{\accentfont}{\normalfont}
+
+  \AtBeginDocument{%
+    \providecommand*\descfont{}\renewcommand*\descfont{\normalcolor\accentfont}
+    \providecommand*\capfont{}\renewcommand*\capfont{\normalcolor\accentfont}
+    \providecommand*\caplabelfont{}\renewcommand*\caplabelfont{\normalcolor\accentfont}
+    \providecommand*\marginparfont{}\renewcommand*\marginparfont{\accentfont\TUD@accenttextcolor}
+    \@ifpackageloaded{subfigure}{%
+      \renewcommand*{\subcapsize}{\normalsize}%
+      \renewcommand*{\subcapfont@f}{\fontfamily{\acdefault}\selectfont}%
+      \renewcommand*{\subcapfont@c}{\fontseries{m}\selectfont}%
+      \renewcommand*{\subcapfont@s}{\fontshape{n}\selectfont}%
+    }{}
+  }
+
+
+  \newcommand*{\setfontheight}{\settoheight{\fontheight}{\mbox{ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}}}
+  \newcommand*{\setfontdepth}{\settodepth{\fontdepth}{\mbox{ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz}}}
+  \newlength{\fontheight}
+  \newlength{\fontdepth}
+
+  \newbox\fontstrutbox
+  \def\fontstrut{\relax\ifmmode\copy\fontstrutbox\else\unhcopy\fontstrutbox\fi}
+  \newcommand*{\setfontstrut}{%
+    \setfontheight%
+    \setfontdepth%
+    \setbox\fontstrutbox\hbox{%
+      \vrule\@height\fontheight
+            \@depth\fontdepth
+            \@width\z@}%
+  }
+
+\AtBeginDocument{%
+  \let\@TUD@marginpar\marginpar
+  \def\marginpar{\@ifnextchar[{\@TUD@marginpar@two}{\@TUD@marginpar@one}}
+  \def\@TUD@marginpar@two[#1]#2{\@TUD@marginpar[\marginparfont #1]{\marginparfont #2}}
+  \def\@TUD@marginpar@one#1{\@TUD@marginpar{\marginparfont #1}}
+}
+
+\normalsize

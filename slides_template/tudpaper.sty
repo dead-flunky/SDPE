@@ -1,0 +1,140 @@
+% tud_rprt is the report-class as described in the TUD-Design-Manual
+% It is based on (makes heavy use of) the KOMA-Class scrreprt
+% This class is provided "as is", the authors take no responsibility
+% for any effects the style file has on the user, the user's life, family,
+% pets, scientific or other career etc.
+% 
+% When making changes to this style file or the accompanying package files
+% please notify the authors:
+% tud-style@pro-kevin.de
+% Good luck!
+
+\def\fileversion{1.0}
+\def\filedate{2008/01/23}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tudpaper}
+ [\filedate\space\fileversion\space 
+   Joe Werner's TUD-Design-Manual package]
+
+
+\RequirePackage{xkeyval}
+\RequirePackage{ifthen}
+\RequirePackage{calc}
+
+\newlength{\TUD@sep@top}
+\newlength{\TUD@sep@left}
+\newlength{\TUD@sep@right}
+\newlength{\TUD@sep@bottom}
+\newlength{\TUD@textwidth}
+% set default values
+  \PassOptionsToPackage{paper=a4paper}{geometry}
+  \newcommand*{\TUD@scale}{1.000}
+  \setlength{\TUD@sep@top}{15mm}
+  \setlength{\TUD@sep@bottom}{20mm}
+
+% Verarbeitung der Optionen
+  \DeclareOptionX[TUD]<\@currname>{paper}{%
+    \ifthenelse{\equal{#1}{a0b}}{% Eigendlich US Arch E
+      \PassOptionsToPackage{papersize={914mm,1219mm}}{geometry} 
+      % ArchE : 914 mm x 1219 mm
+      % a0    : 841 mm x 1189 mm
+      \renewcommand*{\TUD@scale}{3.636}
+      \setlength{\TUD@sep@top}{30mm}\addtolength{\TUD@sep@top}{15mm}
+      \setlength{\TUD@sep@left}{30mm}\addtolength{\TUD@sep@left}{36.5mm}
+      \setlength{\TUD@sep@right}{30mm}\addtolength{\TUD@sep@right}{36.5mm}
+      \setlength{\TUD@sep@bottom}{35mm}\addtolength{\TUD@sep@bottom}{15mm}}{%
+    \ifthenelse{\equal{#1}{a0}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{3.636}
+      \setlength{\TUD@sep@top}{30mm}
+      \setlength{\TUD@sep@left}{30mm}
+      \setlength{\TUD@sep@right}{30mm}
+      \setlength{\TUD@sep@bottom}{35mm}}{%
+    \ifthenelse{\equal{#1}{a1}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{2.500}
+      \setlength{\TUD@sep@top}{30mm}
+      \setlength{\TUD@sep@left}{30mm}
+      \setlength{\TUD@sep@right}{30mm}
+      \setlength{\TUD@sep@bottom}{35mm}}{%
+    \ifthenelse{\equal{#1}{a2}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{2.000}
+      \setlength{\TUD@sep@top}{30mm}
+      \setlength{\TUD@sep@left}{30mm}
+      \setlength{\TUD@sep@right}{30mm}
+      \setlength{\TUD@sep@bottom}{35mm}}{%
+    \ifthenelse{\equal{#1}{a3}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{1.125}
+      \setlength{\TUD@sep@top}{15mm}
+      \setlength{\TUD@sep@left}{15mm}
+      \setlength{\TUD@sep@right}{15mm}
+      \setlength{\TUD@sep@bottom}{20mm}}{%
+    \ifthenelse{\equal{#1}{a4}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{1.000}
+      \setlength{\TUD@sep@top}{15mm}
+      \setlength{\TUD@sep@left}{15mm}
+      \setlength{\TUD@sep@right}{15mm}
+      \setlength{\TUD@sep@bottom}{20mm}}{%
+    \ifthenelse{\equal{#1}{a4report}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=a4paper}{geometry}
+      \renewcommand*{\TUD@scale}{1.000}
+      \setlength{\TUD@sep@top}{20mm}
+      \setlength{\TUD@sep@left}{20mm}
+      \setlength{\TUD@sep@right}{20mm}
+      \setlength{\TUD@sep@bottom}{25mm}}{%
+    \ifthenelse{\equal{#1}{a5}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{0.875}
+      \setlength{\TUD@sep@top}{12mm}
+      \setlength{\TUD@sep@left}{12mm}
+      \setlength{\TUD@sep@right}{12mm}
+      \setlength{\TUD@sep@bottom}{15mm}}{%
+    \ifthenelse{\equal{#1}{a6}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{paper=#1paper}{geometry}
+      \renewcommand*{\TUD@scale}{0.750}
+      \setlength{\TUD@sep@top}{10mm}
+      \setlength{\TUD@sep@left}{10mm}
+      \setlength{\TUD@sep@right}{10mm}
+      \setlength{\TUD@sep@bottom}{15mm}}{%
+    \ifthenelse{\equal{#1}{lang}}{%
+      \PassOptionsToPackage{paper=#1}{tudrule}
+      \PassOptionsToPackage{papersize={99mm,210mm}}{geometry}
+      \renewcommand*{\TUD@scale}{0.750}
+      \setlength{\TUD@sep@top}{10mm}
+      \setlength{\TUD@sep@left}{10mm}
+      \setlength{\TUD@sep@right}{10mm}
+      \setlength{\TUD@sep@bottom}{14mm}}{%
+    \PackageError{\@currname}{Unknown papersize. `paper=#1'}%
+    }}}}}}}}}}
+  }
+  \DeclareOptionX[TUD]<\@currname>{invertrule}{%
+    \PassOptionsToPackage{invertrule}{tudrules}}
+  \DeclareOptionX[TUD]<\@currname>{blackrule}{%
+    \PassOptionsToPackage{blackrule}{tudrules}}
+  \DeclareOptionX*{%
+    \PassOptionsToPackage{\CurrentOption}{geometry}}
+\ProcessOptionsX[TUD]<\@currname>
+
+\RequirePackage{tudrules}
+
+\@ifundefined{TUD@headfootsep}{\newskip\TUD@headfootsep\TUD@headfootsep\baselineskip}{}
+\newskip\TUD@indentbarheight
+  \TUD@indentbarheight \TUD@indentbar@totalheight
+
+\RequirePackage[dvips]{geometry}
+  \setlength{\TUD@textwidth}{\paperwidth - \TUD@sep@left - \TUD@sep@right}
+  \geometry{includeall,nomarginpar,headheight=\TUD@indentbarheight}
+  \geometry{top=\TUD@sep@top,left=\TUD@sep@left,right=\TUD@sep@right,bottom=\TUD@sep@bottom}
+  \geometry{headsep=\TUD@headfootsep,footskip=\TUD@headfootsep}
+  \special{papersize=\the\paperwidth,\the\paperheight}

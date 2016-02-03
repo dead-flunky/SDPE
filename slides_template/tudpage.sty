@@ -1,0 +1,151 @@
+% Erzeuge Identitaetsleiste und Fussleiste
+\def\fileversion{1.1}
+\def\filedate{2008/01/22}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tudpage}
+ [\filedate\space\fileversion\space
+ Joe Werner's TUD-Design-Manual package]
+
+% load needed packages
+\RequirePackage{calc}
+
+\newif\ifTUD@longdoc\TUD@longdocfalse
+
+\DeclareOption{longdoc}
+    \TUD@longdoctrue
+\DeclareOption*{%
+    \PassOptionsToPackage{\CurrentOption}{tudpaper}}
+\ProcessOptions
+
+\RequirePackage{tudpaper}
+
+% Formatierung der Fussnotenleiste (goldener Schnitt)
+\renewcommand*\footnoterule{%
+  \kern-3\p@
+  \ifx\@textbottom\relax\else\vskip \z@ \@plus.0005fil\fi
+  \hrule\@width0.3819660\linewidth\@height0.6pt
+  \kern 2.6\p@}
+% Formartierung der Fussnoten
+\@ifundefined{deffootnote}{}{
+  \newskip\TUD@footparindent
+  \TUD@footparindent \the\parindent
+  \ifdim\TUD@footparindent<1em
+    \TUD@footparindent1em
+  \fi
+  \AtBeginDocument{\deffootnote{\TUD@footparindent}{1em}{%
+    \makebox[\TUD@footparindent][l]{\textsuperscript{\thefootnotemark}}%
+  }}
+}
+
+\RequirePackage{calc}
+\RequirePackage{fancyhdr}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+  %%% realempty %%%
+  \fancypagestyle{realempty}{%
+    \fancyhf{}
+  }
+  %%% empty %%%
+  \fancypagestyle{empty}{%
+    \fancyhf{}
+    \if@reversemargin
+      \fancyhfoffset[LO]{\marginparwidth + \marginparsep}%
+      \fancyhfoffset[RO]{0pt}%
+    \else
+      \fancyhfoffset[LO]{0pt}%
+      \fancyhfoffset[RO]{\marginparwidth + \marginparsep}%
+    \fi
+      \if@twoside
+      \if@reversemargin
+        \fancyhfoffset[LE]{0pt}%
+        \fancyhfoffset[RE]{\marginparwidth + \marginparsep}%
+      \else
+        \fancyhfoffset[LE]{\marginparwidth + \marginparsep}%
+        \fancyhfoffset[RE]{0pt}%
+      \fi
+    \fi
+    \fancyhead[C]{\TUD@indentbar[\headwidth]}
+    \fancyfoot[C]{\tudrule[\headwidth]}
+  }
+  %%% plain %%%
+  \fancypagestyle{plain}{%
+    \fancyhf{}
+    \if@reversemargin
+      \fancyhfoffset[LO]{\marginparwidth + \marginparsep}%
+      \fancyhfoffset[RO]{0pt}%
+    \else
+      \fancyhfoffset[LO]{0pt}%
+      \fancyhfoffset[RO]{\marginparwidth + \marginparsep}%
+    \fi
+    \if@twoside
+      \if@reversemargin
+        \fancyhfoffset[LE]{0pt}%
+        \fancyhfoffset[RE]{\marginparwidth + \marginparsep}%
+      \else
+        \fancyhfoffset[LE]{\marginparwidth + \marginparsep}%
+        \fancyhfoffset[RE]{0pt}%
+      \fi
+    \fi
+    \ifTUD@longdoc
+      \fancyhead[C]{\TUD@indentbar[\headwidth]}
+    \else
+      \if@reversemargin
+        \fancyheadoffset[RO]{10mm}%
+      \else
+        \fancyheadoffset[RO]{\marginparwidth + \marginparsep + 10mm}%
+      \fi
+      \fancyhead[LO]{%
+        \pagingfont%
+        \TUD@indentbar[\headwidth - 10mm]\nobreak\hskip1.6mm\nobreak\thepage%
+      }
+      \if@twoside
+        \if@reversemargin
+          \fancyheadoffset[LE]{10mm}%
+        \else
+          \fancyheadoffset[LE]{\marginparwidth + \marginparsep + 10mm}%
+        \fi
+        \fancyhead[RE]{%
+          \pagingfont%
+          \thepage\nobreak\hskip1.6mm\nobreak\TUD@indentbar[\headwidth - 10mm]%
+        }
+      \fi
+    \fi
+    \fancyfoot[C]{\tudrule[\headwidth]}
+    \ifTUD@longdoc
+      \if@twoside
+        \fancyfoot[LE,RO]{\footerfont\strut\\\thepage}
+      \else
+        \fancyfoot[R]{\footerfont\strut\\\thepage}
+      \fi
+    \fi
+  }
+  %%% headings %%%
+  \fancypagestyle{headings}{%
+    \fancyhf{}
+    \if@reversemargin
+      \fancyhfoffset[LO]{\marginparwidth + \marginparsep}%
+      \fancyhfoffset[RO]{0pt}%
+    \else
+      \fancyhfoffset[LO]{0pt}%
+      \fancyhfoffset[RO]{\marginparwidth + \marginparsep}%
+    \fi
+    \if@twoside
+      \if@reversemargin
+        \fancyhfoffset[LE]{0pt}%
+        \fancyhfoffset[RE]{\marginparwidth + \marginparsep}%
+      \else
+        \fancyhfoffset[LE]{\marginparwidth + \marginparsep}%
+        \fancyhfoffset[RE]{0pt}%
+      \fi
+    \fi
+    \fancyhead[C]{\TUD@indentbar[\headwidth]}
+    \fancyfoot[C]{\tudrule[\headwidth]}
+    \if@twoside
+      \fancyfoot[LE,RO]{\footerfont\strut\\\thepage}
+      \fancyfoot[RE]{\footerfont\strut\\\nouppercase\rightmark}
+      \fancyfoot[LO]{\footerfont\strut\\\nouppercase\leftmark}
+    \else
+      \fancyfoot[R]{\footerfont\strut\\\thepage}
+      \fancyfoot[L]{\footerfont\strut\\\nouppercase\rightmark}
+    \fi
+  }
