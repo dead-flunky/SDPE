@@ -1,2 +1,8 @@
-\beamer@endinputifotherversion {3.36pt}
-\beamer@sectionintoc {1}{Results}{3}{0}{1}
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {2}{DWT watermarking}{4}{0}{1}
+\beamer@sectionintoc {3}{Maximum Likelihood detection}{8}{0}{2}
+\beamer@subsectionintoc {3}{1}{Decision Threshold}{11}{0}{2}
+\beamer@sectionintoc {4}{Experimental Results}{14}{0}{3}
+\beamer@sectionintoc {5}{Conclusion \& Outlook}{18}{0}{4}

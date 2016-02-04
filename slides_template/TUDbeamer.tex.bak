@@ -1,18 +1,20 @@
-\documentclass[accentcolor=tud1b,colorbacktitle, english]{tudbeamer}
+\documentclass[accentcolor=tud1b,colorbacktitle]{tudbeamer}
 \usepackage{graphicx,amsmath,bm,color,psfrag}
-
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage[style=authoryear, backend=biber, maxnames=2]{biblatex}
 %\definecolor{TUDgreen}{rgb}{0.4980,0.6706,0.0863} % (127,171,22)
 \definecolor{TUDblue}{rgb}{0,0.3529,0.6627}       % (0,90,169)
 %\definecolor{TUDred}{rgb}{0.9020,0,0.1020}        % (230,0,26)
-
+\bibliography{TUDbeamer.bib}
 
 \title{Maximum-Likelihood Detection in\\ DWT Domain Image Watermarking\\ using Laplacian Modeling}
 \subtitle{by T. M. Ng and H. K. Garg}
 
 \date{\today}
-\author[V.Mees \and M.Stiefel]{Valentin Mees \and Max Stiefel}               % <--- your name here!
+\author[V. Mees \and M. Stiefel]{Valentin Mees \and Maximilian Stiefel}               % <--- your name here!
 \logo{\textcolor{TUDblue}{\large SPG}}
-\institute[SPG]{}
+\institute[SPG]{Signal Processing Group}
 
 
 \AtBeginSection[]{%
@@ -21,6 +23,7 @@
     \tableofcontents[currentsection]}
 }%
 
+\nocite{*}
 \begin{document}
 
 \begin{titleframe}
@@ -30,7 +33,7 @@
 \vfill
 \includegraphics[width=0.2\textwidth]{figures/spg_logo}
 \vfill
-   Signal Processing Group\\
+   \insertinstitute\\
    Institute of Telecommunications\\
    Technische Universit\"at Darmstadt\\
 \end{titleframe}
@@ -41,175 +44,19 @@
 \section*{Motivation}
 \input{motivation}
 
+\section{DWT watermarking}
+\input{dwt}
 
-%\section{Data model}
-%\input{datamodel}
-%
-%\section{Mean Shift}
-%\input{meanshift1}
-%
-%\section{Robust Mean Shift}
-%\input{robust}
-%
-%\section{Sparse Mean Shift}
-%\input{sparse}
-%
-%\section{Kernel Density Estimate Peaks}
-%\input{reference}
-%%
-%\section{Image Segmentation}
-%\input{segmentation}
-%
-%\section{Post Processing}
-%\input{postprocessing}
-%
-%\section{Results}
-%\input{results}
-%%
-%\section{Conclusion}
-%\input{conclusion}
-%
-%\input{robust_deriv}
-%
-%\input{sparserobust}
+\section{Maximum Likelihood detection}
+\input{ml}
 
+\section{Experimental Results}
+\input{result}
 
+\section{Conclusion \& Outlook}
+\input{conclusion}
 
-
-
-\begin{frame}\frametitle{Contents}
-
- ML via alternating projection\medskip
-
- Proposed approach\medskip
-
- Results\medskip
-
- Conclusion
-
+\begin{frame}{References}
+        \printbibliography
 \end{frame}
-
-\section{Signal model}
-\begin{frame}\frametitle{\insertsection}
-
-Nominal array output model
-$$
-\bm{x}(t)=\sum_{k=1}^{D} \bm{a}(\theta_k) s_k(t) + \bm{n}(t)=\bm{A}(\bm{\theta}) \bm{s}(t) + \bm{n}(t) 
-$$
-\begin{itemize}
-\item for a pulsed radar system $s_k(t)=b_k e^{j\omega_k t}$ with Doppler $\omega_k\propto v_k$
-\item ideal steering vector for uniform linear array (ULA) with $d=0.5\lambda$
-$$
-\bm{a}(\theta)=\left[1,e^{j\pi\sin\theta},\dots,e^{j\pi(M-1)\sin\theta}\right]^T
-$$
-\end{itemize}
-
-Spatial covariance matrix is estimated by\medskip
-
-\centerline{$\hat{\bm{R}}=\frac{1}{N}\sum_{t=1}^N \bm{x}(t)\bm{x}^H(t)$}
-
-\end{frame}
-
-
-\begin{frame}\frametitle{\insertsection}
-
-For a real antenna array, the true steering vector can be expressed as 
-$$
-\tilde{\bm{a}}(\theta) = \bm{Q}(\theta) \bm{a}(\theta)
-$$
-
-\textcolor{TUDblue}{\large{Possible model errors}}
-\begin{itemize}
-\item diagonal $\bm{Q}$: gain and phase errors
-\item full $\bm{Q}$: including physical coupling model 
-\item direction dependent $\bm{Q}(\theta)$: e.g. position errors, orientation, etc.
-\end{itemize}
-\medskip
-
-Calibration is required to correct model errors
-
-\end{frame}
-
-\section{Array calibration}
-\begin{frame}\frametitle{\insertsection}
-
-Calibration measurements
-\begin{itemize}
-\item single source from known locations $\eta_c$ for $c=1,\dots,J$
-\item array response estimated by $\hat{\bm{a}}_c=\mathcal{P}\{\hat{\bm{R}}\}$
-\end{itemize}
-\medskip
-
-Problem: Find $\bm{Q}$ that best fits $\bm{Q}\bm{a}(\eta_c)$ to measured $\hat{\bm{a}}_c$, $\forall c$\medskip
-
-\begin{block}{Global calibration}
-Full global matrix is found by linear regression [Pierre \& Kaveh, 1991]
-$$
-\hat{\bm{Q}} = \arg \min_{\bm Q} \sum_{c=1}^J \left\| \hat{\bm{a}}_c - \bm{Q}\bm{a}(\eta_c)\right\|^2
-$$
-\end{block}
-
-\end{frame}
-
-
-\begin{frame}\frametitle{\insertsection}
-
-Direction dependent errors require local correction
-\medskip
-
-\begin{block}{Local calibration}
-Diagonal local matrix $\bm{Q}(\theta)=\mathrm{diag}\{\bm{q}(\theta)\}$ is found by weighted regression [Lanne et al., 2006]:
-$$
-\hat{\bm{q}}(\theta) = \arg \min_{\bm{q}} \sum_{c=1}^J w_c(\theta) \left\| \hat{\bm{a}}_c - \mathrm{diag}\{\bm{q}\} \bm{a}(\eta_c)\right\|^2
-$$
-\end{block}
-
-Direction dependent weights $w_c(\theta)=e^{-h(\theta-\eta_c)^2}$\medskip
-
-Selection of bandwidth $h$ 
-\begin{itemize}
-\item cross-validation, e.g. leave-one-out 
-\item sub-optimal choice $h=1/\Delta\eta^2$
-\end{itemize}
-
-\end{frame}
-
-\section{High-resolution direction finding}
-\begin{frame}\frametitle{\insertsection}
-Coherent source scenario\vspace{-4mm}
-\begin{columns}
-\column{.55\textwidth}
-\begin{block}{\ Subspace methods + decorrelation}
-\begin{center}
-\psfrag{t}{\small $\hat{\bm{\theta}}$}
-\psfrag{x(t)}[][]{\small $\bm{x}(t)$}
-\psfrag{Qm1}{\small $\hat{\bm{Q}}^{-1}$}
-\psfrag{FB/SS}[][]{\small FB/SS}
-\psfrag{MUSIC}[][]{\small \ MUSIC}
-\psfrag{text1}[][]{\footnotesize pre-calibration}
-\includegraphics[height=18mm]{figures/coh_calib_df1.eps}
-\end{center}
-\begin{itemize}
-\item[--] pre-calibration produces colored noise
-\item[--] weak interference [Schoor \& Yang, 2009] caused by imperfect $\hat{\bm{Q}}$
-\end{itemize}
-\end{block}
-\column{.45\textwidth}
-\begin{block}{\centerline{Maximum likelihood}}\vspace{0.8mm}
-\begin{center}
-\psfrag{t}{\small $\hat{\bm{\theta}}$}
-\psfrag{x(t)}[][]{\small $\bm{x}(t)$}
-\psfrag{Qa}{\small $\hat{\bm{Q}}(\theta)\bm{a}(\theta)$}
-\psfrag{ML}[][]{\small \ ML}
-\psfrag{text2}{\footnotesize corrected manifold}
-\includegraphics[height=18mm]{figures/coh_calib_df2.eps}
-\end{center}
-\begin{itemize}
-\item[--] not sensitive to coherent sources
-\item[--] manifold correction allows for local calibration
-\end{itemize}
-\end{block}
-\end{columns}
-\end{frame}
-
 \end{document}

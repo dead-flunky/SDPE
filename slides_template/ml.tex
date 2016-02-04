@@ -1,13 +1,69 @@
-formeln
+\begin{frame}{\insertsection}
 
-ML
-\[
-L(\bm y) = \frac{\prod\limits_{i=1}^N f_{Y_i}(y_i|w_i^*)}{\prod\limits_{i=1}^N f_{Y_i}(y_i|0)}
-\]
+\begin{itemize}
+	\item watermark $\bm w^*$ is detected if $L(\bm y) = \frac{f_{\bm Y}(\bm y|M_1)}{f_{\bm Y}(\bm y|M_0)} > \lambda$
+	\item $M_0$ is the set of all unused watermarks including the null watermark. For imperceptible watermark, very small embedding strength $\alpha_i$ is used 
+	\newline $\Rightarrow f_{\bm Y}(\bm y|M_0) \approx f_{\bm Y}(\bm y|\bm 0)$
+	\item assuming statistically independent transform coefficients
+\end{itemize}
 
-Threshold
+\begin{equation*}
+ L(\bm y) = \frac{\prod_{i=1}^N f_{Y_i}(y_i|w_i^*)}{\prod_{i=1}^N f_{Y_i}(y_i|0)} 
+ = \prod_{i=1}^N \frac{\frac{1}{1+\alpha_i w^*_i}f_{X_i}\left(\frac{y_i}{1+\alpha_i w^*_i}\right)}{f_{X_i}(y_i)}   \underset{\bm 0}{\overset{\bm w^*}{\gtrless}}\lambda 
+\end{equation*}
 
-- depends on some function of coefficients
--- depends on mean and variance of the unknown image DWT coeffs - assumed to be laplacian
+\end{frame}
 
-Resulting threshold ?
+
+\begin{frame}{\insertsection}
+\textcolor{TUDblue}{$\Rightarrow$} taking the natural logarithm of the likelihood ratio, the decision rule becomes
+\vspace{5mm}
+\begin{align*}
+ l(\bm y) = \ln(L(\bm y)) &= \ln \left( \prod_{i=1}^N \frac{\frac{1}{1+\alpha_i w^*_i}f_{X_i}\left(\frac{y_i}{1+\alpha_i w^*_i}\right)}{f_{X_i}(y_i)}\right) \\
+&= \sum_{i=1}^{N} \left[ \ln\left(f_{X_i}\left(\frac{y_i}{1 + \alpha_i w^*_i}\right)\right)  - \ln\left(f_{X_i}(y_i)\right)  \right] \\
+&\underset{\bm 0}{\overset{\bm w^*}{\gtrless}} \underbrace{\ln(\lambda) + \sum_{i=1}^N \ln (1 + \alpha_i w^*_i)}_{=\lambda'}  
+\end{align*}
+\end{frame}
+
+\subsection{Decision Threshold}
+\begin{frame}{\insertsubsection}{Neyman-Pearson Criterion}
+\textcolor{TUDblue}{$\Rightarrow$} NP Criterion used to find a $\lambda'$ which minimizes $P_{MD}$ for a fixed $P_{FA}$
+\begin{align*}
+P_{FA} = P(l(\bm Y) > \lambda' | M_0) \approx P(l(\bm X) > \lambda') = \int_{\lambda'}^\infty f_{l(\bm X)}(l(\bm x)) dl(\bm x)
+\end{align*}
+
+with $l(\bm x) = l(\bm y)|_{\bm y = \bm x} = \sum\limits_{i=1}^{N} \left[ \ln\left(f_{X_i}\left(\frac{y_i}{1 + \alpha_i w^*_i}\right)\right)  - \ln\left(f_{X_i}(y_i)\right)  \right]$
+
+\textcolor{TUDblue}{$\Rightarrow$} central limit theorem: PDF of $l(\bm X)$ assumed to be Gaussian
+
+\begin{align*}
+P_{FA} &= \int_{\lambda'}^\infty \frac{1}{\sqrt{2 \pi \sigma^2_{l(\bm X)}}} \exp\left( - \frac{l(\bm x) - \mu_{l(\bm X)}}{2 \sigma^2_{l(\bm X)}} \right) = \frac{1}{2} \text{erfc}\left( \frac{\lambda' - \mu_{l(\bm X)}}{\sqrt{2 \sigma^2_{l(\bm X)}}}\right)\\
+\textcolor{TUDblue}{\Rightarrow} \lambda' &= \text{erfc}^{-1} (2 P_{FA}) \sqrt{2 \sigma^2_{l(\bm X)}} + \mu_{l(\bm X)}
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{\insertsubsection}{Laplacian Model}
+
+\textcolor{TUDblue}{$\Rightarrow$} DWT coefficient $X_i$ is modeled by a Laplacian PDF 
+\begin{equation*}
+f_{X_i}(x_i) = 0.5b_i e^{-b_i|x_i - \mu_i | }
+\end{equation*}	
+\textcolor{TUDblue}{$\Rightarrow$} decision rule is obtained by substituting Laplacian PDF in $l(\bm y)$
+\begin{align*}
+l(\bm y) &= \sum_{i_1}^N b_i \left[ |y_i - \mu_i| - |1 + \alpha_i w_i^* |^{-1} |y_i -\mu_i - \mu_i \alpha_i w_i^* |\right]   \\
+&\underset{\bm 0}{\overset{\bm w^*}{\gtrless}} \lambda' = \text{erfc}^{-1} (2 P_{FA}) \sqrt{2 \sigma^2_{l(\bm X)}} + \mu_{l(\bm X)}
+\end{align*}
+
+\end{frame}
+
+
+\begin{frame}{\insertsubsection}{Unknowns}
+$\mu_{l(\bm X)}$ and $\sigma^2_{l(\bm X)}$ are derived as
+\begin{align*}
+\mu_{l(\bm X)} &= \sum_{i= 1}^N {1 - \frac{\bar{b}+ e^{-\bar{b}}}{|p|}}\\
+\sigma^2_{l(\bm X)} &= \sum_{i= 1}^N 1-\frac{2e^{-\bar{b}} (1 + \bar{b})}{|p|} +\frac{2-e^{-2\bar{b}}-2\bar{b}e^{-\bar{b}}}{|p|^2}
+\end{align*}
+where $\bar{b} = b_i|\mu_i\alpha_iw_i^*|$  and $p = 1+\alpha_iw_i^*$.
+
+\end{frame}

@@ -1,43 +1,21 @@
 \begin{frame}\frametitle{\insertsection}
+\begin{block}{Imperceptible digital watermarks}
+\begin{itemize}
+\item invisible to the human eye
+\item can disclose copyright infringements
+\end{itemize}
+\end{block}
 
- Direction finding with coherent sources for an automotive radar-array\vspace{-2mm}
+\begin{block}{in Discrete Wavelet domain}
+\begin{itemize}
+\item robust to modification in spatial domain
+\end{itemize}
+\end{block}
 
- \begin{center}
-  \psfrag{car}{\footnotesize car (ACC)}
-  \psfrag{v1}{\footnotesize $v_1$}
-  \psfrag{v2}{\footnotesize $v_2$}
-  \psfrag{r1}{\footnotesize $r_1$}
-  \psfrag{r2}{\footnotesize $r_2$}
-  \psfrag{t1}{\footnotesize $\theta_1$}
-  \psfrag{t2}{\footnotesize $\theta_2$}
-  \psfrag{dots}{\footnotesize $\vdots$}
-  \psfrag{radar-array}{\footnotesize radar-array}
-  \includegraphics[width=.62\textwidth]{figures/Xfig_auto.eps}
- \end{center}\vspace{-4mm}
-
- \begin{itemize}
-  \item multiple targets in same range bin ($r_1\approx r_2$) with identical Doppler ($v_1=v_2$)
-  \item e.g. specular multipath with guard rail, wide objects, etc.
- \end{itemize}
-
-\end{frame}
-
-
-
-\begin{frame}\frametitle{\insertsection}
-
- In practical array processing, model errors are present $\Rightarrow$ calibration
-
- \begin{itemize}
-  \item manifold correction
-  \item pre-calibration (if decorrelation is required)
- \end{itemize}
- \medskip
-
- \begin{block}{Approach}
- We combine global and local manifold correction with maximum likelihood (ML) direction finding, and consider computational aspects.\medskip
-
- Application to experimental data
- \end{block}
+\begin{block}{using stochastic detection}
+\begin{itemize}
+\item Neyman-Pearson Test yields optimal detection probability for given false alarm rate
+\end{itemize}
+\end{block}
 
 \end{frame}

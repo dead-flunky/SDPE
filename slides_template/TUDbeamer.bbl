@@ -1,0 +1,74 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{entry}{nyt}
+    \entry{779947}{inproceedings}{}
+      \name{labelname}{3}{}{%
+        {{uniquename=0,hash=5f1f3730aa518b539654ead7640d3f16}{Kim}{K\bibinitperiod}{Young-Sik}{Y\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0b2913da6467df0b786c77d688f7f98f}{Kwon}{K\bibinitperiod}{O-Hyung}{O\bibinithyphendelim H\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=9cb2c937fe06a40fd5abce43de20c126}{Park}{P\bibinitperiod}{Rae-Hong}{R\bibinithyphendelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{3}{}{%
+        {{uniquename=0,hash=5f1f3730aa518b539654ead7640d3f16}{Kim}{K\bibinitperiod}{Young-Sik}{Y\bibinithyphendelim S\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0b2913da6467df0b786c77d688f7f98f}{Kwon}{K\bibinitperiod}{O-Hyung}{O\bibinithyphendelim H\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=9cb2c937fe06a40fd5abce43de20c126}{Park}{P\bibinitperiod}{Rae-Hong}{R\bibinithyphendelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{8f1e0d68ad00d407a0fad2114ed7486f}
+      \strng{fullhash}{7e7a200a1f92b7261025e994d57ef331}
+      \field{sortinit}{K}
+      \field{labelyear}{1999}
+      \field{labelmonth}{07}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Wavelet based watermarking method for digital images using the human visual system}
+      \field{booktitle}{Circuits and Systems, 1999. ISCAS '99. Proceedings of the 1999 IEEE International Symposium on}
+      \field{month}{07}
+      \field{title}{Wavelet based watermarking method for digital images using the human visual system}
+      \field{volume}{4}
+      \field{year}{1999}
+      \field{pages}{80\bibrangedash 83 vol.4}
+    \endentry
+    \entry{1407921}{article}{}
+      \name{labelname}{2}{}{%
+        {{uniquename=0,hash=2119f19a518737b88acdb1824d160794}{Ng}{N\bibinitperiod}{T.M.}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=feabbc4a5a75b22be0d09aa81e3c1e55}{Garg}{G\bibinitperiod}{H.K.}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=2119f19a518737b88acdb1824d160794}{Ng}{N\bibinitperiod}{T.M.}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=feabbc4a5a75b22be0d09aa81e3c1e55}{Garg}{G\bibinitperiod}{H.K.}{H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{b624dbe8fb37168cbb8cb8b80bd578fd}
+      \strng{fullhash}{b624dbe8fb37168cbb8cb8b80bd578fd}
+      \field{sortinit}{N}
+      \field{labelyear}{2005}
+      \field{labelmonth}{04}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Maximum-likelihood detection in DWT domain image watermarking using Laplacian modeling}
+      \field{journaltitle}{Signal Processing Letters, IEEE}
+      \field{month}{04}
+      \field{number}{4}
+      \field{title}{Maximum-likelihood detection in DWT domain image watermarking using Laplacian modeling}
+      \field{volume}{12}
+      \field{year}{2005}
+      \field{pages}{285\bibrangedash 288}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

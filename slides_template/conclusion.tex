@@ -1,1 +1,26 @@
-conclusion
+\begin{frame}{\insertsection}
+
+\textcolor{TUDblue}{Conclusion:}
+\begin{itemize}
+\item formulation of an ML detection scheme based on modeling the distribution of the DWT coefficients using Laplacian pdf
+\item derivation of decision threshold for Neyman-Pearson criterion
+\item comparison of Laplacian model with Gaussian model
+\item Laplacian model yields a better watermark detection than Gaussian model
+\end{itemize}
+
+\textcolor{TUDblue}{Critique:}
+
+\begin{itemize}
+ \item $\mu_i$ and $\sigma_i$ are estimated as sample mean and unbiased sample variance 
+\newline \textcolor{TUDblue}{$\Rightarrow$} inconsistent with the Laplacian assumption:
+\newline $\hat{\mu}_{i, MLE} = \text{median}(y\in B)$ and $\hat{\sigma}^2_{i, MLE} = 2/N_B \sum_{y\in B} (y-\hat{\mu}_i)^2$ 
+
+\end{itemize}
+\textcolor{TUDblue}{Outlook:}
+\begin{itemize}
+ \item evaluation of robustness under other standard image processing operations
+\end{itemize}
+\end{frame}
+
+
+
